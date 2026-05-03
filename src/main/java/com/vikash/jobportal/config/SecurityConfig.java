@@ -33,6 +33,7 @@ public class SecurityConfig {
                         // 🔓 any logged-in user
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/jobs/**").authenticated()
+                        .requestMatchers("/applications/**").authenticated()
 
                         .anyRequest().authenticated()
                 )
