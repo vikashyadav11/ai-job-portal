@@ -2,7 +2,7 @@ package com.vikash.jobportal.service;
 
 import com.vikash.jobportal.dto.JobRequest;
 import com.vikash.jobportal.entity.Job;
-import com.vikash.jobportal.repostiory.JobRepository;
+import com.vikash.jobportal.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

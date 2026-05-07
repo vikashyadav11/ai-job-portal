@@ -20,4 +20,5 @@ public class Application {
     private String status; // APPLIED, SHORTLISTED, REJECTED
 
     private String resumePath;
+    private Integer matchScore; // 0 to 100
 }

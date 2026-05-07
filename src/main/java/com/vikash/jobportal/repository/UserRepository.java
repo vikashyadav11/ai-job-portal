@@ -1,4 +1,4 @@
-package com.vikash.jobportal.repostiory;
+package com.vikash.jobportal.repository;
 
 import com.vikash.jobportal.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

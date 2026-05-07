@@ -1,5 +1,6 @@
 package com.vikash.jobportal.controller;
 
+import com.vikash.jobportal.dto.ApplicationResponse;
 import com.vikash.jobportal.entity.Application;
 import com.vikash.jobportal.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,9 @@ public class ApplicationController {
 
     @PreAuthorize("hasRole('CANDIDATE')")
     @PostMapping("/apply/{jobId}/resume")
-    public Application applyWithResume(
+    public ApplicationResponse applyWithResume(
             @PathVariable Long jobId,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("file") MultipartFile file) throws Exception {
 
         String email = SecurityContextHolder
                 .getContext()

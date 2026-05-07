@@ -19,5 +19,6 @@ public class Job {
     private String company;
     private String location;
 
-    private String postedBy; // recruiter email
+    private String postedBy;
+    private String requiredSkills;
 }

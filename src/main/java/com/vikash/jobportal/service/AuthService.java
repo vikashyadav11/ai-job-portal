@@ -3,7 +3,7 @@ package com.vikash.jobportal.service;
 import com.vikash.jobportal.dto.LoginRequest;
 import com.vikash.jobportal.dto.RegisterRequest;
 import com.vikash.jobportal.entity.User;
-import com.vikash.jobportal.repostiory.UserRepository;
+import com.vikash.jobportal.repository.UserRepository;
 import com.vikash.jobportal.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
