@@ -1,6 +1,9 @@
 package com.vikash.jobportal.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vikash.jobportal.dto.MatchResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,40 +11,42 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MatchingService {
+
+    private final AiService aiService;
+
+    private final ObjectMapper objectMapper;
 
     public MatchResponse calculateMatch(
             List<String> resumeSkills,
-            String requiredSkills
-    ) {
+            String jobSkills
+    ) throws Exception {
 
-        List<String> jobSkills =
-                Arrays.stream(requiredSkills.split(","))
-                        .map(String::trim)
-                        .toList();
+        String aiResponse =
+                aiService.semanticSkillMatch(
+                        resumeSkills,
+                        jobSkills
+                );
 
-        List<String> matched = new ArrayList<>();
-        List<String> missing = new ArrayList<>();
+        JsonNode root =
+                objectMapper.readTree(aiResponse);
 
-        for (String skill : jobSkills) {
+        String content =
+                root.get("choices")
+                        .get(0)
+                        .get("message")
+                        .get("content")
+                        .asText();
 
-            boolean found = resumeSkills.stream()
-                    .anyMatch(s -> s.equalsIgnoreCase(skill));
+        content = content
+                .replace("```json", "")
+                .replace("```", "")
+                .trim();
 
-            if (found) {
-                matched.add(skill);
-            } else {
-                missing.add(skill);
-            }
-        }
-
-        int score =
-                (matched.size() * 100) / jobSkills.size();
-
-        return new MatchResponse(
-                score,
-                matched,
-                missing
+        return objectMapper.readValue(
+                content,
+                MatchResponse.class
         );
     }
 }

@@ -151,4 +151,81 @@ public class AiService {
             );
         }
     }
+
+    public String semanticSkillMatch(
+            List<String> resumeSkills,
+            String jobSkills
+    ) {
+
+        String prompt = """
+            
+            Resume Skills:
+            %s
+            
+            Job Skills:
+            %s
+            
+            Compare the skills semantically.
+            
+            Related technologies should also be treated as matches.
+            
+            Example:
+            SQL and MySQL are related.
+            Spring and Spring Boot are related.
+            
+            Return ONLY valid JSON in this format:
+            
+            {
+              "matchScore": 85,
+              "matchedSkills": [
+                "Java",
+                "SQL ↔ MySQL"
+              ],
+              "missingSkills": [
+                "Docker"
+              ]
+            }
+            
+            """
+                .formatted(
+                        resumeSkills,
+                        jobSkills
+                );
+
+        RestTemplate restTemplate =
+                new RestTemplate();
+
+        HttpHeaders headers =
+                new HttpHeaders();
+
+        headers.setContentType(
+                MediaType.APPLICATION_JSON
+        );
+
+        headers.setBearerAuth(apiKey);
+
+        Map<String, Object> message =
+                Map.of(
+                        "role", "user",
+                        "content", prompt
+                );
+
+        Map<String, Object> request =
+                Map.of(
+                        "model", "gpt-4.1-mini",
+                        "messages", List.of(message)
+                );
+
+        HttpEntity<Map<String, Object>> entity =
+                new HttpEntity<>(request, headers);
+
+        String response =
+                restTemplate.postForObject(
+                        "https://api.openai.com/v1/chat/completions",
+                        entity,
+                        String.class
+                );
+
+        return response;
+    }
 }
